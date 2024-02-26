@@ -1,21 +1,30 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require("cors")
+const cors = require("cors");
 
-const connectToDb = require('./config/db.js')
+const connectToDb = require('./config/db.js');
 
 const app = express();
 
 //Express middleware
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
-app.use(cors())
+// Define the allowed origin
+const allowedOrigin = 'https://campus360.vercel.app';
 
-// init connection to db
-connectToDb()
+// Configure CORS options
+const corsOptions = {
+  origin: allowedOrigin
+};
 
-const userRoutes = require('./routes/userRoutes.js')
+// Enable CORS with specific options
+app.use(cors(corsOptions));
+
+// Init connection to db
+connectToDb();
+
+const userRoutes = require('./routes/userRoutes.js');
 
 app.use('/', userRoutes);
 
